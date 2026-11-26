@@ -46,6 +46,7 @@ permission:
   edit: deny
   task: deny
   webfetch: deny
+  websearch: deny
 ```
 
 No model is pinned: the reviewer uses the session's model.
