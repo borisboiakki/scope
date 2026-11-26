@@ -27,3 +27,7 @@ Decision log of the SCOPE method itself. Newest last. Each entry: decision, reas
 | D-021 | 2026-11-26 | Closing a release reopens roadmap and epics (logged) so the next release can be planned without a CR; unfinished work moves only with `--carry` and a reason. | Incremental releases without paperwork for normal planning. |
 | D-022 | 2026-11-26 | Quick-track stories carry `cr: CR-n` and are not listed in epics.md. | Avoids reopening the approved plan for a small fix. |
 | D-023 | 2026-11-26 | `scope.py` re-runs itself with `.scope/.venv` when PyYAML is missing, so skills always call `python3 .scope/scope.py`. | One command line in all skills and tools. |
+| D-024 | 2026-11-26 | Release ids (R1, R2…) are not reported as undefined until the roadmap exists. | The spec assigns releases before the plan defines them (found in the M3 dry run). |
+| D-025 | 2026-11-26 | Plan coverage is checked per acceptance criterion; a story implementing `FR-n` covers all its criteria. | The plan skill promises every criterion is covered; the tool now enforces it. |
+| D-026 | 2026-11-26 | `epics.md` is versioned (1.0 at first approval, bump after a release close) like the roadmap. | Consistent versioning of approved planning documents. |
+| D-027 | 2026-11-26 | Skills reference the tool as `scope.py` defined once at their top, and must use the IDs the tool prints. | Short skills; the dry run showed invented IDs break references. |

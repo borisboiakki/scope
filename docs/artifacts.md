@@ -24,7 +24,7 @@ Conventions shared by the templates (written by the skills) and `scope.py` (whic
   and **removes them** from the written artifact.
 - IDs are written plainly (`FR-4.2`, `ASM-7`); the tool finds them with the patterns below.
 - Lists of IDs in front matter are YAML lists: `implements: [FR-1.1, FR-1.2]`.
-- Every versioned artifact (brief, spec, architecture, roadmap) ends with a `## Changelog` table:
+- Every versioned artifact (brief, spec, architecture, roadmap, epics) ends with a `## Changelog` table:
   `| Version | Date | CR | Change |`.
 
 ## Parsed structures
@@ -47,7 +47,7 @@ Conventions shared by the templates (written by the skills) and `scope.py` (whic
 
 | Item | Values |
 |---|---|
-| brief, spec, architecture, roadmap, ADR | `draft`, `approved`, `superseded` |
+| brief, spec, architecture, roadmap, epics, ADR | `draft`, `approved`, `superseded` |
 | release | `planned`, `active`, `released` |
 | epic | `planned`, `ready`, `launched`, `done`, `blocked` |
 | story | `draft`, `ready`, `in-progress`, `in-review`, `done`, `blocked`, `needs-rework`, `removed` |

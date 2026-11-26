@@ -149,7 +149,7 @@ def _approve_plan(p: Project, rel: str, by: str) -> str:
     if not epics:
         raise ScopeError(f"no epic for {rel} in epics.md")
     _require_clean(p, extra_release=rel)
-    msgs = [_approve_doc(p, "roadmap", p.docs["roadmap"], by), _approve_plan_epics(p, by)]
+    msgs = [_approve_doc(p, "roadmap", p.docs["roadmap"], by), _approve_doc(p, "epics", p.docs["epics"], by)]
     items = {}
     for ep in epics:
         if p.epics[ep]["status"] == "planned":
@@ -167,19 +167,6 @@ def _approve_plan(p: Project, rel: str, by: str) -> str:
     p.save_state()
     msgs.append(f"approved plan {rel}: {len(epics)} epic(s), {len(items)} story(ies) ready")
     return "\n".join(m for m in msgs if m)
-
-
-def _approve_plan_epics(p: Project, by: str) -> str:
-    doc = p.docs["epics"]
-    last = p.last_approval("epics")
-    if doc.status == "approved" and last and last.get("sha256") == doc.hash():
-        return ""
-    text = set_fm_field(read(doc.path), "status", "approved")
-    write(doc.path, text)
-    from .util import content_hash
-    _record(p, "epics", by, sha=content_hash(text))
-    _close_reopen(p, "epics")
-    return "approved epics.md"
 
 
 def _launch(p: Project, ep: str, by: str, mode: str | None) -> str:

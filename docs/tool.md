@@ -60,7 +60,7 @@ when PyYAML is missing. Output is short plain text; exit code 1 means refused or
 | E10 | Epic release not in the roadmap |
 | E11 | Epics table and story files disagree |
 | E12 | Story implements no requirement |
-| E13 | Requirement of a planned release without story |
+| E13 | Acceptance criterion of a planned release not implemented by any story (a story implementing `FR-n` covers all its criteria) |
 | E14 | Status approved/active without a recorded approval |
 | E15 | Approved content changed (needs a CR) |
 | E16 | Approved artifact set back to another status without a CR |

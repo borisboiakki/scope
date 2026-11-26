@@ -42,3 +42,8 @@ status: draft
 | Order | Story | Title | Depends on | Size |
 |---|---|---|---|---|
 | 1 | ST-3 | <title> | ST-2 | S |
+
+## Changelog
+| Version | Date | CR | Change |
+|---|---|---|---|
+| 0.1 | <date> | — | First draft |

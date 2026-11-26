@@ -10,3 +10,7 @@
 - Tool `scope.py` (setup, doctor, init, status, check, approvals with content hashes, CRs, story
   transitions with review-cycle and stop rules, release close with carry-over, register, trace,
   remaining, impact, extract, next-id, config, git policy) with pytest suite and CI.
+- Skills `scope` (init, status, approvals, config), `scope-spec`, `scope-arch`, `scope-plan`; skill
+  authoring checks in the test suite; example project `examples/todo-cli` up to the R1 plan approval.
+- Tool: release ids allowed before the roadmap exists; coverage checked per acceptance criterion;
+  `epics.md` versioned like the other planning documents.

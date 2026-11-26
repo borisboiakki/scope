@@ -8,7 +8,7 @@ from .util import (FIELD_RE, HEADING_RE, ScopeError, content_hash, ids_in, parse
                    read, strip_comments, yaml_module)
 
 DOCS = ("brief", "spec", "architecture", "roadmap", "epics", "register")
-VERSIONED = ("brief", "spec", "architecture", "roadmap")
+VERSIONED = ("brief", "spec", "architecture", "roadmap", "epics")
 REQ_H = re.compile(r"^###\s+(?P<id>(?:FR|NFR)-\d+)\b\s*(?P<title>.*)$")
 BR_H = re.compile(r"^###\s+(?P<id>BR-\d+)\b\s*(?P<title>.*)$")
 REL_H = re.compile(r"^##\s+(?P<id>R\d+)\b\s*[—–-]?\s*(?P<title>.*)$")

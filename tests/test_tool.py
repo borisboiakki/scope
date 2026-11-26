@@ -1,6 +1,6 @@
 import subprocess
 
-from conftest import scope  # noqa: F401
+from conftest import scope
 
 
 def test_init_creates_project(run):
@@ -25,6 +25,14 @@ def test_dangling_reference(sample):
                 "- **Source:** BR-9\n- **Statement:** When the user deletes")
     out = sample("check", ok=False)
     assert "E06" in out and "BR-9" in out
+
+
+def test_releases_before_roadmap(sample):
+    sample.path("roadmap.md").unlink()
+    sample.path("epics.md").unlink()
+    for st in sample.path("stories").glob("*.md"):
+        st.unlink()
+    assert "0 error(s)" in sample("check")
 
 
 def test_requirement_without_criterion(sample):
@@ -101,7 +109,7 @@ def test_plan_needs_coverage(sample):
     sample.edit("stories/ST-2-fast-listing.md", "implements: [NFR-1.1]", "implements: [FR-1.1]")
     sample.edit("stories/ST-2-fast-listing.md", "(NFR-1.1)", "(FR-1.1)")
     out = sample("approve", "plan", "R1", ok=False)
-    assert "E13" in out and "NFR-1" in out
+    assert "E13" in out and "NFR-1.1" in out
 
 
 def test_blocking_question_blocks_approval(sample):
@@ -267,3 +275,13 @@ def test_git_policy(planned):
 def test_doctor_runs(run):
     out = run("doctor", ok=None)
     assert "doctor:" in out and "project initialised" in out
+
+
+def test_example_project_is_consistent(tmp_path, capsys):
+    import shutil
+    from pathlib import Path
+    src = Path(__file__).resolve().parent.parent / "examples" / "todo-cli"
+    shutil.copytree(src, tmp_path / "todo-cli")
+    code = scope.main(["--root", str(tmp_path / "todo-cli"), "check"])
+    out = capsys.readouterr().out
+    assert code == 0 and "0 error(s), 0 warning(s)" in out, out

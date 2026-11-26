@@ -88,9 +88,11 @@ def _check_files(p: Project, r: Report):
 
 def _check_refs(p: Project, r: Report):
     defined = p.defined_ids()
+    no_roadmap = "roadmap" not in p.docs  # releases are named in the spec before the roadmap defines them
     for doc in p.all_files():
         where = rel_name(p, doc)
-        missing = sorted({i for i in ids_in(doc.text) if i not in defined})
+        missing = sorted({i for i in ids_in(doc.text) if i not in defined
+                          and not (no_roadmap and re.fullmatch(r"R\d+", i))})
         if not missing:
             continue
         if doc.fm.get("type") == "cr" and doc.status in ("proposed", "approved"):
@@ -149,15 +151,20 @@ def _check_plan(p: Project, r: Report, extra_release: str | None):
     releases = {rel for rel in p.releases if p.plan_approved(rel)}
     if extra_release:
         releases.add(extra_release)
+    implemented = {i for sid, st in p.stories.items() if "#" not in sid and st.status != "removed"
+                   for i in id_list(st.fm.get("implements"))}
     for rel in p.releases:
-        uncovered = [rid for rid, q in p.reqs.items() if not q["removed"] and p.effective_release(rid) == rel
-                     and not p.stories_implementing(rid)]
+        uncovered = []
+        for rid, q in p.reqs.items():
+            if q["removed"] or p.effective_release(rid) != rel or rid in implemented:
+                continue
+            uncovered += [ac for ac in q["acs"] if ac not in implemented] if q["acs"] else [rid]
         if not uncovered:
             continue
         if rel in releases:
-            r.error("E13", f"{rel}: requirements without story: {', '.join(uncovered)}")
+            r.error("E13", f"{rel}: acceptance criteria without story: {', '.join(uncovered)}")
         elif p.epics_of_release(rel):
-            r.warn("W06", f"{rel}: requirements without story yet: {', '.join(uncovered)}")
+            r.warn("W06", f"{rel}: acceptance criteria without story yet: {', '.join(uncovered)}")
 
 
 def _check_approvals(p: Project, r: Report):

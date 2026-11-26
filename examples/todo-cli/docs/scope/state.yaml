@@ -1,0 +1,68 @@
+# SCOPE state. Managed by scope.py only: do not edit by hand.
+phase: build
+current:
+  release: R1
+  epic: null
+  story: null
+  build_mode: null
+waivers: []
+approvals:
+- target: brief
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: e73ac0476cc8fc4b88ff315f0b5db4652a5ac77d681fbd5d4950fd4684609ad8
+- target: spec
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: 6992d580cf82d762f2416b276418f1bc3d69e7212b00f0c3526445cf7ae5b97e
+- target: architecture
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: 2199451215172ba71f9bb13fddd5c184253bccfed7bbc01ce9d1d2b3c1cd59ad
+- target: ADR-1
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: 5f4c2b4252c913c627f9d438098ae09b0db1ec3a2c9ea1ef22bc6c27fe34ff92
+- target: ADR-2
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: 76179dffedbaa0a0012de58b8faf4ee88aad9d6a2f86d4ca6f24f5014bbe9d4f
+- target: roadmap
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: c7ae39a25b7f2863591e66abda817205014ab49d65a9f64d9bd06bf6df3b6d82
+- target: epics
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  version: '1.0'
+  sha256: ea2ae9aefa5cf0f64fddfe895b6630251a3937cb7d90a4f8ff357f33e78812d4
+- target: plan R1
+  date: '2026-11-26T11:54:19Z'
+  by: human via example
+  items:
+    ST-1: 34f7f181a63d3fb6eeee6483c9690e7e0dfa056c5111ceddc07c41fa15c3c1d5
+    ST-2: a53004f6b57ae3af3449b67efd5f7f49d5fdd97b34fed85d67ae671e73b7f34f
+    ST-3: 2569e65bce7ebf06c1fd44adc312739ee3688625963970c3f69ef8294f5a7935
+    ST-4: cb6928e8b0bab2f3bbb83ffc3f60dc9b403c479dcd539ec990fffef2f93f9b31
+    ST-5: 20bb4aa478687175d4e393e787f1d046e0d4504128ef0abdec7d59f4a857b14f
+blockers: []
+history:
+- 2026-11-26T11:54:19Z init (preset story, mode supervised)
+- 2026-11-26T11:54:19Z approved brief by human via example
+- 2026-11-26T11:54:19Z approved spec by human via example
+- 2026-11-26T11:54:19Z approved architecture by human via example
+- 2026-11-26T11:54:19Z approved ADR-1 by human via example
+- 2026-11-26T11:54:19Z approved ADR-2 by human via example
+- 2026-11-26T11:54:19Z approved roadmap by human via example
+- 2026-11-26T11:54:19Z approved epics by human via example
+- 2026-11-26T11:54:19Z approved plan R1 by human via example
+reopens: []
+carryover: []
+branches: {}
+epic_modes: {}

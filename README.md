@@ -25,10 +25,14 @@ Work in progress — not usable yet.
 | M0 | Method (`METHOD.md`), compatibility research, authoring guide | done |
 | M1 | Artifact templates, formats (`docs/artifacts.md`) | done |
 | M2 | Tool `scope.py` + tests, CI | done |
-| M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan` | planned |
+| M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
 | M4 | `scope-build`, `scope-reviewer`, `scope-change` | planned |
 | M5 | Installer, CI, example project | planned |
 | M6 | Pilot, v0.1.0 | planned |
+
+## Example
+
+[examples/todo-cli](examples/todo-cli) — a small project taken from brief to approved plan of its MVP.
 
 ## Documents
 
