@@ -23,3 +23,8 @@
   v1/v2 agent formats, optional setup); getting started guide in the README.
 - Verified with Claude Code 2.1.332: skills and reviewer agent discovered; reviewer subagent run read-only.
 - Tool: ticking a story's task checkboxes is not a change of its approved definition.
+- Installer: `--global` (skills in `~/.claude/skills`, agents in `~/.claude/agents` and
+  `~/.config/opencode/agents`, tool in `~/.scope`) and custom folders (`--skills-dir`,
+  `--claude-agents-dir`, `--opencode-agents-dir`, `--tool-dir`); the tool path is written into skills,
+  agents and `AGENTS.md` when the tool is outside the project; `doctor` finds global and custom installs
+  and notes a version mismatch.

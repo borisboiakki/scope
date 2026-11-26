@@ -51,6 +51,20 @@ permission:
 
 No model is pinned: the reviewer uses the session's model.
 
+## Global and custom installation
+
+| Item | Claude Code | opencode |
+|---|---|---|
+| Global skills | `~/.claude/skills/` | `~/.config/opencode/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Global agents | `~/.claude/agents/` | `~/.config/opencode/agents/` |
+| Other skill folders | not supported | `skills` array in `opencode.json` |
+
+`install.py --global` uses `~/.claude/skills/` for the skills (one copy for both tools). With a tool folder
+outside the project, the installer writes the tool's full path into the skills and agents, and
+`scope.py init` writes it into the project's `AGENTS.md`. `<tool-dir>/install.json` records where the
+skills and agents went, so `doctor` can find them. Global locations of Claude Code are taken from its
+documentation and were not tried in a session (a different home folder would sign the CLI out).
+
 ## Verified
 
 With **Claude Code 2.1.332** on Linux (2026-11-26), in a project installed with `install.py --setup`:

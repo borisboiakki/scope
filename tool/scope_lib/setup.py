@@ -40,6 +40,25 @@ ALLOWED = {
 }
 
 
+def tool_ref(root: Path | None = None) -> str:
+    """How to call this scope.py: relative to the project when it is inside it, else its full path."""
+    script = TOOL_DIR / "scope.py"
+    root = (root or Path.cwd()).resolve()
+    if script.is_relative_to(root):
+        return script.relative_to(root).as_posix()
+    ref = script.as_posix()
+    return f'"{ref}"' if " " in ref else ref
+
+
+def install_manifest() -> dict:
+    import json  # noqa: PLC0415
+    path = TOOL_DIR / "install.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    except ValueError:
+        return {}
+
+
 def venv_python(tool_dir: Path = TOOL_DIR) -> Path:
     sub = "Scripts/python.exe" if os.name == "nt" else "bin/python"
     return tool_dir / ".venv" / sub
@@ -85,21 +104,36 @@ def doctor(root: Path) -> str:
         venv_ok = venv_python().exists() and subprocess.run(
             [str(venv_python()), "-c", "import yaml"], capture_output=True).returncode == 0
         item(venv_ok, "PyYAML" + (" (in .scope/.venv, used automatically)" if venv_ok else ""),
-             "run: python3 .scope/scope.py setup")
-    item(venv_python().exists(), f"virtual environment {venv_python()}", "run: python3 .scope/scope.py setup")
+             f"run: python3 {tool_ref(root)} setup")
+    item(venv_python().exists(), f"virtual environment {venv_python()}", f"run: python3 {tool_ref(root)} setup")
     git = shutil.which("git")
     item(bool(git), "git installed", "install git (needed by opencode skill discovery and the git policy)")
     if git:
         res = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=root, capture_output=True, text=True)
         item(res.stdout.strip() == "true", "project is a git repository", "run: git init")
-    skills = root / ".claude" / "skills"
-    found = sorted(p.parent.name for p in skills.glob("scope*/SKILL.md")) if skills.exists() else []
-    item(len(found) >= 6, f"skills installed: {', '.join(found) or 'none'}", "run the SCOPE installer")
-    item((root / ".claude/agents/scope-reviewer.md").exists(), "reviewer agent for Claude Code", "run the installer")
-    item((root / ".opencode/agents/scope-reviewer.md").exists(), "reviewer agent for opencode", "run the installer")
+    man, home = install_manifest(), Path.home()
+    skill_dirs = [Path(man["skills_dir"])] if man.get("skills_dir") else []
+    skill_dirs += [root / ".claude" / "skills", home / ".claude" / "skills", home / ".config" / "opencode" / "skills"]
+    found_in = next((d for d in skill_dirs if len(list(d.glob("scope*/SKILL.md"))) >= 6), None)
+    names = sorted(p.parent.name for p in found_in.glob("scope*/SKILL.md")) if found_in else []
+    item(bool(found_in), f"skills installed: {', '.join(names) or 'none'}" + (f" ({found_in})" if found_in else ""),
+         "run the SCOPE installer")
+    for label, key, dirs in (("Claude Code", "claude_agents_dir", [root / ".claude/agents", home / ".claude/agents"]),
+                             ("opencode", "opencode_agents_dir",
+                              [root / ".opencode/agents", home / ".config/opencode/agents"])):
+        dirs = ([Path(man[key])] if man.get(key) else []) + dirs
+        where = next((d for d in dirs if (d / "scope-reviewer.md").exists()), None)
+        item(bool(where), f"reviewer agent for {label}" + (f" ({where})" if where else ""), "run the installer")
     for var in ("OPENCODE_DISABLE_CLAUDE_CODE", "OPENCODE_DISABLE_CLAUDE_CODE_SKILLS"):
         item(not os.environ.get(var), f"{var} not set", "unset it, or opencode will not load .claude/skills")
     item((root / "docs/scope/state.yaml").exists(), "project initialised (docs/scope/)", "run: scope.py init")
+    cfg = root / "docs/scope/config.yaml"
+    installed = read(TOOL_DIR / "VERSION").strip() if (TOOL_DIR / "VERSION").exists() else "dev"
+    if cfg.exists():
+        import re  # noqa: PLC0415
+        m = re.search(r"^scope_version:\s*['\"]?([^'\"\n]+)", read(cfg), re.M)
+        if m and m.group(1).strip() != installed:
+            lines.append(f"note project set up with SCOPE {m.group(1).strip()}, installed tool is {installed}")
     lines.append(f"doctor: {problems} problem(s)")
     return "\n".join(lines)
 
@@ -137,7 +171,7 @@ def init(root: Path, name: str, preset: str, mode: str, language: str, test_cmd:
     if not (d / "register.md").exists():
         shutil.copyfile(TEMPLATES / "register.md", d / "register.md")
         out.append("created docs/scope/register.md")
-    out.append(_install_agents_md(root, "python" if os.name == "nt" else "python3"))
+    out.append(_install_agents_md(root, "python" if os.name == "nt" else "python3", tool_ref(root)))
     claude = root / "CLAUDE.md"
     if not claude.exists():
         write(claude, "@AGENTS.md\n")
@@ -148,8 +182,8 @@ def init(root: Path, name: str, preset: str, mode: str, language: str, test_cmd:
     return "\n".join(x for x in out if x)
 
 
-def _install_agents_md(root: Path, python: str) -> str:
-    section = read(TEMPLATES / "agents-section.md").replace("<python>", python)
+def _install_agents_md(root: Path, python: str, ref: str) -> str:
+    section = read(TEMPLATES / "agents-section.md").replace("<python>", python).replace(".scope/scope.py", ref)
     path = root / "AGENTS.md"
     if not path.exists():
         write(path, "# Project rules\n\n" + section)
