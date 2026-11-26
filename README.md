@@ -26,7 +26,7 @@ Work in progress — not usable yet.
 | M1 | Artifact templates, formats (`docs/artifacts.md`) | done |
 | M2 | Tool `scope.py` + tests, CI | done |
 | M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
-| M4 | `scope-build`, `scope-reviewer`, `scope-change` | planned |
+| M4 | `scope-build`, `scope-reviewer` agent, `scope-change` | done |
 | M5 | Installer, CI, example project | planned |
 | M6 | Pilot, v0.1.0 | planned |
 

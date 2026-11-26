@@ -169,6 +169,7 @@ For each story, in the dependency order given in `epics.md`:
 | Default | set in `config.yaml` (`build.mode`) | |
 
 In supervised mode, a story that is not `PASS` after 2 cycles is handed to the human.
+In autonomous mode the developer always fixes what cycle 1 found (even on `PASS`) before cycle 2.
 
 ### 8.3 Stop rules (both modes)
 
@@ -185,7 +186,9 @@ story and in `state.yaml`, prints a short summary and waits for the human when:
 | B6 | Environment, tool or dependency failure the agent cannot solve safely. |
 | B7 | The reviewer returns `BLOCKED`. |
 
-After the human resolves it: `scope-build EP-<n> --auto --resume` (or the story again in supervised mode).
+After the human resolves it, the build resumes (`scope.py story unblock ST-<n>`, then skill `scope-build`).
+When the answer changes an approved document (B3, B4, B5), it goes through a CR: reopening the blocked
+story for that CR resolves the blocker, and the story is rebuilt after the plan is re-approved.
 Non-blocking issues are logged in the register or the story and the build goes on.
 
 ## 9. Review
@@ -275,9 +278,10 @@ Any change to approved content goes through a CR.
 
 A CR can also move requirements or epics between releases.
 
-**Quick track** (`scope-change quick "<request>"`): for a defect or a small change that does not alter
-the architecture. One CR plus one story are created together and approved with one human approval,
-then built with `scope-build`. The quick story carries `cr: CR-n` and is not listed in `epics.md`.
+**Quick track** (skill `scope-change`): for a defect or a small change that leaves every approved
+document unchanged: it only adds one story implementing existing acceptance criteria. One CR plus one
+story are created together and approved with one human approval, then built with `scope-build`; the CR
+is closed at once. If the story's epic was done, it is launched again in its previous mode. The quick story carries `cr: CR-n` and is not listed in `epics.md`.
 If the impact analysis shows more than a small change, the quick track is refused and the normal flow is used.
 
 ## 14. The tool

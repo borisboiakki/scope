@@ -34,6 +34,7 @@ As a <user>, I want <capability>, so that <benefit>.
 
 ## Implementation record
 <!-- Everything above this heading is frozen at plan approval. Filled during the build. -->
+- **Base commit:** <git rev-parse HEAD at story start>
 - **Branch / commits:** <branch, hashes>
 - **Files changed:** <paths>
 - **Tests:** <test names → AC>

@@ -14,3 +14,8 @@
   authoring checks in the test suite; example project `examples/todo-cli` up to the R1 plan approval.
 - Tool: release ids allowed before the roadmap exists; coverage checked per acceptance criterion;
   `epics.md` versioned like the other planning documents.
+- Skills `scope-build` (supervised and autonomous build, review cycles, stop rules B1–B7, git events)
+  and `scope-change` (normal and quick change requests, apply and re-approve); reviewer agent source
+  `agents/scope-reviewer.md` (read-only, fixed verdict format).
+- Tool: reworked stories can restart in a done epic; quick stories relaunch a done epic; reopening a
+  blocked story for a CR resolves the blocker; clearer messages.
