@@ -48,7 +48,8 @@ story (what happened, what you tried, the decision the human must take), then st
 3. **Implement**: tests first when practical, then the code, following the story context, the ADRs and
    the project rules of `AGENTS.md`.
 4. **Verify**: run the test and lint commands until they pass (otherwise B2).
-5. **Record**: fill the *Implementation record* (files changed, tests → AC, notes, new register ids).
+5. **Record**: tick the story's Tasks checklist and fill the *Implementation record* (files changed,
+   tests → AC, notes, new register ids).
 6. **Review cycle**:
    - `scope.py story review ST-n`, then `scope.py git story-before-review ST-n`;
    - launch the **scope-reviewer** subagent with: the story path, the base commit, the cycle number,

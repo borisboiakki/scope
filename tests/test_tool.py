@@ -366,3 +366,16 @@ date: 2026-11-26
     _build_story(planned, "ST-3")
     assert "EP-1 done" in planned("story", "done", "ST-3")
     assert "0 error(s)" in planned("check")
+
+
+def test_ticking_tasks_is_not_drift(planned):
+    planned.edit("stories/ST-1-add-a-task.md", "## Implementation record", "## Tasks\n- [x] done\n\n## Implementation record")
+    assert "E15" in planned("check", ok=False)  # a new task is a real change
+    planned.edit("stories/ST-1-add-a-task.md", "- [x] done", "- [ ] done")
+    assert "E15" in planned("check", ok=False)
+
+
+def test_checkbox_state_ignored_by_hash():
+    from scope_lib.util import content_hash
+    assert content_hash("a\n- [ ] task\n") == content_hash("a\n- [x] task\n")
+    assert content_hash("a\n- [ ] task\n") != content_hash("a\n- [ ] other\n")

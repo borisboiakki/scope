@@ -19,3 +19,7 @@
   `agents/scope-reviewer.md` (read-only, fixed verdict format).
 - Tool: reworked stories can restart in a done epic; quick stories relaunch a done epic; reopening a
   blocked story for a CR resolves the blocker; clearer messages.
+- Installer `install.py` (install, upgrade keeping `.scope/.venv` and `docs/scope/`, uninstall, opencode
+  v1/v2 agent formats, optional setup); getting started guide in the README.
+- Verified with Claude Code 2.1.332: skills and reviewer agent discovered; reviewer subagent run read-only.
+- Tool: ticking a story's task checkboxes is not a change of its approved definition.

@@ -16,9 +16,42 @@ brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epic
 - **Explicit**: assumptions and open questions are logged in one register through the whole process.
 - **Safe autonomy**: build a whole epic autonomously with two mandatory review cycles per story, stopping on any blocker.
 
+## Getting started
+
+Requirements: Python 3.10+, git, Claude Code or opencode (1.18.29+ or 2.x).
+
+```bash
+git clone https://github.com/borisboiakki/scope.git
+cd my-project && git init            # if it is not a git repository yet
+python3 ../scope/install.py . --setup
+```
+
+`install.py` copies the six skills to `.claude/skills/` (read by both tools), the reviewer agent to
+`.claude/agents/` and `.opencode/agents/`, and the tool to `.scope/`; `--setup` creates `.scope/.venv`
+with PyYAML. It never touches `docs/scope/`, so running it again upgrades SCOPE safely
+(`--uninstall` removes it, `--opencode-format v2` writes the opencode 2.x native agent format).
+
+Then, in Claude Code or opencode, in the project:
+
+| You say | Skill | What happens |
+|---|---|---|
+| "set up SCOPE" | `scope` | checks the environment, asks git policy, build mode, test command; creates `docs/scope/` |
+| "write the brief" → "approve brief" | `scope-spec` | brief with goals and MVP; you approve it |
+| "write the spec" → "approve spec" | `scope-spec` | requirements with release, criteria, sources |
+| "design the architecture" → "approve architecture" | `scope-arch` | arc42/C4 + ADRs, project rules in `AGENTS.md` |
+| "plan R1" → "approve plan R1" | `scope-plan` | roadmap, epics, self-contained stories |
+| "launch EP-1 in autonomous mode" | `scope` | starts the epic (or supervised: you approve each story) |
+| "build EP-1" | `scope-build` | implements, reviews (subagent), commits per policy; stops on blockers |
+| "change FR-3 …", "there is a bug …" | `scope-change` | change request with impact; you approve; applied and re-approved |
+| "status", "what's next" | `scope` | progress, blockers, open questions, next step |
+| "close R1" | `scope` | release notes, carry-over, planning of R2 |
+
+In Claude Code you can also call a skill directly (`/scope-plan`), in opencode with `@scope-plan`.
+
 ## Status
 
-Work in progress — not usable yet.
+Work in progress (pre-release). Verified with Claude Code 2.1.332; opencode support is documented but
+not yet tried on a real installation (see `docs/compatibility.md`).
 
 | Milestone | Content | Status |
 |---|---|---|
@@ -27,7 +60,7 @@ Work in progress — not usable yet.
 | M2 | Tool `scope.py` + tests, CI | done |
 | M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
 | M4 | `scope-build`, `scope-reviewer` agent, `scope-change` | done |
-| M5 | Installer, CI, example project | planned |
+| M5 | Installer (`install.py`), getting started, real Claude Code check | done |
 | M6 | Pilot, v0.1.0 | planned |
 
 ## Example
