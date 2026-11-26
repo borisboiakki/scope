@@ -18,12 +18,12 @@ brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epic
 
 ## Status
 
-Work in progress — milestone 0 (method definition). Not usable yet.
+Work in progress — not usable yet.
 
 | Milestone | Content | Status |
 |---|---|---|
-| M0 | Method (`METHOD.md`), compatibility research, authoring guide | in progress |
-| M1 | Artifact templates | planned |
+| M0 | Method (`METHOD.md`), compatibility research, authoring guide | done |
+| M1 | Artifact templates, formats (`docs/artifacts.md`) | done |
 | M2 | Tool `scope.py` + tests | planned |
 | M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan` | planned |
 | M4 | `scope-build`, `scope-reviewer`, `scope-change` | planned |
@@ -35,4 +35,5 @@ Work in progress — milestone 0 (method definition). Not usable yet.
 - [METHOD.md](METHOD.md) — the method (normative)
 - [docs/authoring.md](docs/authoring.md) — how skills, agents and templates are written
 - [docs/compatibility.md](docs/compatibility.md) — Claude Code / opencode installation details
+- [docs/artifacts.md](docs/artifacts.md) — artifact formats parsed by the tool
 - [docs/decisions.md](docs/decisions.md) — design decisions

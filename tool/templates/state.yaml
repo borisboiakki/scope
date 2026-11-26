@@ -1,0 +1,26 @@
+# SCOPE state. Managed by scope.py only: do not edit by hand.
+
+phase: init            # init | brief | spec | architecture | plan | build | release
+current:
+  release: null        # e.g. R1
+  epic: null           # e.g. EP-2
+  story: null          # e.g. ST-7
+  build_mode: null     # supervised | autonomous while an epic is running
+
+waivers: []            # e.g. {gate: G3, reason: "small tool, no architecture", by: human, date: ...}
+
+approvals: []
+# - target: spec          # brief | spec | architecture | ADR-n | plan R1 | launch EP-1 | ST-n | CR-n | release close R1
+#   version: "1.0"
+#   date: 2026-11-26T10:00:00Z
+#   by: "human via claude-code"
+#   sha256: "<hash of the approved content>"
+
+blockers: []
+# - story: ST-7
+#   code: B3              # B1-B7, see METHOD.md 8.3
+#   summary: "needs FR-4 change, CR-2 drafted"
+#   date: ...
+#   resolved: false
+
+history: []            # config changes, phase changes, release closes (one line each)

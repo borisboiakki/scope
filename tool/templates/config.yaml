@@ -1,0 +1,28 @@
+# SCOPE configuration. Written by `scope.py init`, changed with `scope config`.
+# Changes are logged in state.yaml (history).
+
+scope_version: "<installed SCOPE version>"
+language: en                      # language of the artifacts
+
+project:
+  name: "<product name>"
+  test_command: "<e.g. pytest -q>"     # run by scope-build and the reviewer
+  lint_command: "<e.g. ruff check .>"  # empty if none
+
+python: ".scope/.venv/bin/python"  # interpreter used to run scope.py
+
+build:
+  mode: supervised                # supervised | autonomous (default for scope-build)
+  supervised_max_cycles: 2        # review cycles before hand-over (1-2)
+  autonomous_cycles: 2            # fixed by the method: both cycles mandatory
+
+git:
+  preset: story                   # story | fine | human | off | custom
+  enabled: true
+  commit_by: agent                # agent | human (agent proposes the message)
+  commit_at: [phase-artifact, story-done]
+  # also: story-before-review, story-after-review, epic-done, manual
+  branching: per-epic             # none | per-release | per-epic | per-story
+  branch_pattern: "scope/{id}-{slug}"
+  merge: never                    # never | ask | on-epic-done
+  push: never                     # never | ask | on-epic-done

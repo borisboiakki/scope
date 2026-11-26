@@ -19,3 +19,5 @@ Decision log of the SCOPE method itself. Newest last. Each entry: decision, reas
 | D-013 | 2026-11-26 | No comparison run against BMAD. | Owner. |
 | D-014 | 2026-11-26 | Support opencode 1.x from **1.18.29** (owner's version) and 2.x: skills in `.claude/skills/` (read by both); opencode reviewer written in the 1.x agent format, which 2.x still reads. | opencode docs at tag v1.18.29 and 2.x, see `compatibility.md`. |
 | D-015 | 2026-11-26 | License: **MIT**. | Owner. |
+| D-016 | 2026-11-26 | Each template lives in the `references/` folder of the skill that writes it; the files `scope.py init` creates (config, state, register, AGENTS section) live in `tool/templates/`. Formats the tool parses are fixed in `docs/artifacts.md`. | Progressive disclosure: a skill loads only its own templates. |
+| D-017 | 2026-11-26 | Test and lint commands are stored in `config.yaml` (`project.test_command`, `project.lint_command`) so build and review run them without guessing. | Needed by the build loop and the reviewer. |
