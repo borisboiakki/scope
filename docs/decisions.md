@@ -17,3 +17,5 @@ Decision log of the SCOPE method itself. Newest last. Each entry: decision, reas
 | D-011 | 2026-11-26 | Skills installed once in `.claude/skills/` (read by both tools); reviewer rendered for both tools; `AGENTS.md` + `CLAUDE.md` importing it. | opencode V2 docs, see `compatibility.md`. |
 | D-012 | 2026-11-26 | Templates use established light frameworks: EARS, ISO 29148 quality criteria, arc42 + C4, MADR, INVEST, Given/When/Then, Conventional Commits. | Owner: use common best practices; see `authoring.md`. |
 | D-013 | 2026-11-26 | No comparison run against BMAD. | Owner. |
+| D-014 | 2026-11-26 | Support opencode 1.x from **1.18.29** (owner's version) and 2.x: skills in `.claude/skills/` (read by both); opencode reviewer written in the 1.x agent format, which 2.x still reads. | opencode docs at tag v1.18.29 and 2.x, see `compatibility.md`. |
+| D-015 | 2026-11-26 | License: **MIT**. | Owner. |

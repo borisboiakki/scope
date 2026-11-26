@@ -8,6 +8,7 @@ This repository defines SCOPE, a spec-driven workflow for AI coding agents (see 
   propose a change to `METHOD.md` (and log it in `docs/decisions.md`).
 - `docs/authoring.md` before writing or editing a skill, agent profile or template.
 - `docs/compatibility.md` before touching installation paths or front matter.
+- Supported targets: Claude Code and opencode 1.x (from 1.18.29) and 2.x.
 
 ## Rules
 

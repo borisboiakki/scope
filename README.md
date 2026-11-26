@@ -1,7 +1,8 @@
 # SCOPE
 
 **S**imple, **C**ontrolled, **O**rchestrated **P**rocess for **E**ngineering — a light, spec-driven
-development workflow for AI coding agents. Works with **Claude Code** and **opencode**.
+development workflow for AI coding agents. Works with **Claude Code** and **opencode** (1.18.29+ and 2.x).
+License: MIT.
 
 ```
 brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epics, stories) ─G4─▶ launch epic ─G5─▶ build + review ─▶ release
