@@ -7,3 +7,6 @@
 - Compatibility with opencode 1.x (from 1.18.29) and 2.x; MIT license.
 - Artifact templates (brief, spec, architecture, ADR, roadmap, epics, story, CR) and init templates
   (config, state, register, AGENTS section); artifact formats in `docs/artifacts.md`.
+- Tool `scope.py` (setup, doctor, init, status, check, approvals with content hashes, CRs, story
+  transitions with review-cycle and stop rules, release close with carry-over, register, trace,
+  remaining, impact, extract, next-id, config, git policy) with pytest suite and CI.

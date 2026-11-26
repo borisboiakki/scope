@@ -18,6 +18,8 @@ Conventions shared by the templates (written by the skills) and `scope.py` (whic
 - Markdown with YAML front matter. Common fields: `id`, `type`, `version` (`major.minor`, starting at
   `0.1` while draft, `1.0` at first approval), `status`.
 - Approval data (who, when, hash) is stored in `docs/scope/state.yaml`, never in the artifact.
+- The approval hash ignores status values (the front matter `status:` line and `- **Status:**` lines), which
+  change during the lifecycle; any other change to approved content is detected by `scope.py check`.
 - `<angle brackets>` are placeholders. `<!-- comments -->` are guidance for the agent: it follows them
   and **removes them** from the written artifact.
 - IDs are written plainly (`FR-4.2`, `ASM-7`); the tool finds them with the patterns below.
@@ -36,7 +38,7 @@ Conventions shared by the templates (written by the skills) and `scope.py` (whic
 | ADR | File `adr/ADR-<n>-<slug>.md`, front matter `id: ADR-<n>` |
 | Release | Heading `## R<n> — <name>` in roadmap.md with field lines (`Status`, `Goal`, `In scope`, `Out of scope`, `Exit criteria`) |
 | Epic | Heading `## EP-<n> <title>` in epics.md with field lines (`Release`, `Status`, `Goal`) and a stories table |
-| Story | File `stories/ST-<n>-<slug>.md`, front matter (`id`, `epic`, `release`, `status`, `size`, `implements`, `adrs`, `depends_on`) |
+| Story | File `stories/ST-<n>-<slug>.md`, front matter (`id`, `epic`, `release`, `status`, `size`, `implements`, `adrs`, `depends_on`; `cr: CR-n` for a quick-track story, which is then not listed in epics.md) |
 | Story definition | Everything above the heading `## Implementation record` (hashed at plan approval) |
 | CR | File `changes/CR-<n>-<slug>.md`, front matter (`id`, `type: cr`, `change_type`, `class`, `quick`, `status`, `affects`, `date`) |
 | Register item | Row of the table in register.md whose first cell is `ASM-<n>` or `OQ-<n>` |

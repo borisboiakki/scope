@@ -8,7 +8,8 @@ status: draft
 # Epics
 
 <!-- One section per epic. An epic delivers a user-visible capability and belongs to one release.
-     The stories table gives the build order: a story comes after the stories it depends on. -->
+     The stories table gives the build order: a story comes after the stories it depends on.
+     Story status lives in the story file only (scope.py status shows it). -->
 
 ## Definition of Ready (all stories)
 - Acceptance criteria are testable and trace to requirements.
@@ -27,10 +28,10 @@ status: draft
 - **Goal:** <capability delivered>
 - **Requirements:** FR-1, FR-2
 
-| Order | Story | Title | Depends on | Size | Status |
-|---|---|---|---|---|---|
-| 1 | ST-1 | <title> | — | S | draft |
-| 2 | ST-2 | <title> | ST-1 | M | draft |
+| Order | Story | Title | Depends on | Size |
+|---|---|---|---|---|
+| 1 | ST-1 | <title> | — | S |
+| 2 | ST-2 | <title> | ST-1 | M |
 
 ## EP-2 <title>
 - **Release:** R1
@@ -38,6 +39,6 @@ status: draft
 - **Goal:** <capability>
 - **Requirements:** <IDs>
 
-| Order | Story | Title | Depends on | Size | Status |
-|---|---|---|---|---|---|
-| 1 | ST-3 | <title> | ST-2 | S | draft |
+| Order | Story | Title | Depends on | Size |
+|---|---|---|---|---|
+| 1 | ST-3 | <title> | ST-2 | S |

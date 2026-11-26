@@ -21,3 +21,9 @@ Decision log of the SCOPE method itself. Newest last. Each entry: decision, reas
 | D-015 | 2026-11-26 | License: **MIT**. | Owner. |
 | D-016 | 2026-11-26 | Each template lives in the `references/` folder of the skill that writes it; the files `scope.py init` creates (config, state, register, AGENTS section) live in `tool/templates/`. Formats the tool parses are fixed in `docs/artifacts.md`. | Progressive disclosure: a skill loads only its own templates. |
 | D-017 | 2026-11-26 | Test and lint commands are stored in `config.yaml` (`project.test_command`, `project.lint_command`) so build and review run them without guessing. | Needed by the build loop and the reviewer. |
+| D-018 | 2026-11-26 | The approval hash ignores status values; story status lives only in the story file (no status column in the epics table). | Statuses change during the build; everything else is frozen. |
+| D-019 | 2026-11-26 | A CR can be approved while the check reports drift (E15/E16): the CR is how drift is resolved. Other errors still block it. | Otherwise an unapproved edit could never be regularised. |
+| D-020 | 2026-11-26 | The tool creates branches and commits per policy; it never merges or pushes, it prints what the policy asks. | Merges and pushes are outward-facing; the agent asks the human. |
+| D-021 | 2026-11-26 | Closing a release reopens roadmap and epics (logged) so the next release can be planned without a CR; unfinished work moves only with `--carry` and a reason. | Incremental releases without paperwork for normal planning. |
+| D-022 | 2026-11-26 | Quick-track stories carry `cr: CR-n` and are not listed in epics.md. | Avoids reopening the approved plan for a small fix. |
+| D-023 | 2026-11-26 | `scope.py` re-runs itself with `.scope/.venv` when PyYAML is missing, so skills always call `python3 .scope/scope.py`. | One command line in all skills and tools. |

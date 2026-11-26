@@ -113,9 +113,9 @@ matter (`id`, `version`, `status`, plus type-specific fields).
 | 3 Architecture | `scope-arch` | spec | architecture.md, ADRs | **G3 architecture** |
 | 4 Plan | `scope-plan` | spec, architecture (excerpts) | roadmap.md, epics.md, stories | **G4 plan** (roadmap + epics + stories of the release) |
 | 5 Build | `scope-build` | one story at a time | code, story records | **G5 epic launch**, then **G6 story** in supervised mode |
-| 6 Release | `scope release close` | reports | release notes, updated roadmap | **G7 release close** |
+| 6 Release | `approve release-close` | reports | release notes, updated roadmap | **G7 release close** |
 
-A skill refuses to start when the gate before it is not passed (`scope.py check --gate <n>`).
+A skill refuses to start when the gate before it is not passed (`scope.py check --for <phase>`).
 Small projects may skip the architecture phase only if the human says so at G2; this is recorded in
 `state.yaml` as an explicit waiver.
 
@@ -144,8 +144,8 @@ Small projects may skip the architecture phase only if the human says so at G2; 
   at G4. The records below it are filled during the build.
 - Any later change to approved content makes `check` fail until a CR reopens the artifact (§12).
 
-Approval targets: `brief`, `spec`, `architecture`, `plan R<n>` (roadmap entry + epics + stories of that
-release), `launch EP-<n>`, `ST-<n>` (supervised mode), `CR-<n>`, `release close R<n>`.
+Approval targets: `brief`, `spec`, `architecture`, `ADR-<n>`, `plan R<n>` (roadmap + epics + stories of
+that release), `launch EP-<n>`, `ST-<n>` (supervised mode), `CR-<n>`, `release-close R<n>`.
 
 ## 8. Build
 
@@ -235,9 +235,10 @@ Commit messages follow Conventional Commits with the SCOPE ID as scope: `feat(ST
   rough epics without stories.
 - `scope.py remaining` writes `reports/remaining.md`: requirements not done (per release), open stories,
   open CRs, deferred items, open register items.
-- `scope release close R<n>` (gate G7): checks exit criteria, writes release notes
-  (`reports/release-R<n>.md`), moves unfinished items to the next release or `later` with a recorded
-  reason, marks the release `released` and opens planning of the next one.
+- `approve release-close R<n>` (gate G7): checks that the release's work is done, writes release notes
+  (`reports/release-R<n>.md`), moves unfinished items to another release only with `--carry R<m> --reason`
+  (recorded as carry-over), marks the release `released` and reopens roadmap and epics for planning
+  the next release.
 
 ## 12. Register: assumptions and open questions
 
@@ -276,8 +277,8 @@ A CR can also move requirements or epics between releases.
 
 **Quick track** (`scope-change quick "<request>"`): for a defect or a small change that does not alter
 the architecture. One CR plus one story are created together and approved with one human approval,
-then built with `scope-build`. If the impact analysis shows more than a small change, the quick track is
-refused and the normal flow is used.
+then built with `scope-build`. The quick story carries `cr: CR-n` and is not listed in `epics.md`.
+If the impact analysis shows more than a small change, the quick track is refused and the normal flow is used.
 
 ## 14. The tool
 
@@ -286,8 +287,11 @@ refused and the normal flow is used.
   requirements, runs `scope.py doctor`, then asks the init questions (git preset, build mode, artifact
   language). If something is missing, the agent explains how to install it and stops; it never installs
   system packages without the human's consent.
-- Commands: `init`, `doctor`, `status`, `check [--gate n]`, `approve`, `next-id`, `extract <ids>`,
-  `trace`, `impact <ids>`, `register`, `remaining`, `release`, `config`.
+- Commands (reference: `docs/tool.md`): `setup`, `doctor`, `init`, `status`, `check [--for <phase>]`,
+  `approve`, `waive`, `reopen`, `cr`, `story`, `next-id`, `extract`, `trace`, `impact`, `remaining`,
+  `register`, `config`, `git`.
+- The tool creates branches and commits when the git policy says the agent does; it never merges or
+  pushes (it says what the policy asks, and the agent asks the human).
 - Output is short and plain text so that reading it costs few tokens.
 
 ## 15. Context budget rules (for skill authors)
