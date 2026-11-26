@@ -15,8 +15,7 @@ status: draft
 |---|---|
 | <quality goal or constraint> | NFR-1 / brief constraint |
 
-## 2. Context (C4 level 1)
-<!-- The system, its users and the external systems it talks to. -->
+## 2. Context (C4 level 1: users and external systems)
 ```mermaid
 flowchart LR
   user[<User>] --> sys[<System>]
