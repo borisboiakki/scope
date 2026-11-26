@@ -1,7 +1,8 @@
 # SCOPE
 
 **S**imple, **C**ontrolled, **O**rchestrated **P**rocess for **E**ngineering — a light, spec-driven
-development workflow for AI coding agents. Works with **Claude Code** and **opencode**.
+development workflow for AI coding agents. Works with **Claude Code** and **opencode** (1.18.29+ and 2.x).
+License: MIT.
 
 ```
 brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epics, stories) ─G4─▶ launch epic ─G5─▶ build + review ─▶ release
@@ -17,21 +18,27 @@ brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epic
 
 ## Status
 
-Work in progress — milestone 0 (method definition). Not usable yet.
+Work in progress — not usable yet.
 
 | Milestone | Content | Status |
 |---|---|---|
-| M0 | Method (`METHOD.md`), compatibility research, authoring guide | in progress |
-| M1 | Artifact templates | planned |
-| M2 | Tool `scope.py` + tests | planned |
-| M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan` | planned |
+| M0 | Method (`METHOD.md`), compatibility research, authoring guide | done |
+| M1 | Artifact templates, formats (`docs/artifacts.md`) | done |
+| M2 | Tool `scope.py` + tests, CI | done |
+| M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
 | M4 | `scope-build`, `scope-reviewer`, `scope-change` | planned |
 | M5 | Installer, CI, example project | planned |
 | M6 | Pilot, v0.1.0 | planned |
+
+## Example
+
+[examples/todo-cli](examples/todo-cli) — a small project taken from brief to approved plan of its MVP.
 
 ## Documents
 
 - [METHOD.md](METHOD.md) — the method (normative)
 - [docs/authoring.md](docs/authoring.md) — how skills, agents and templates are written
 - [docs/compatibility.md](docs/compatibility.md) — Claude Code / opencode installation details
+- [docs/artifacts.md](docs/artifacts.md) — artifact formats parsed by the tool
+- [docs/tool.md](docs/tool.md) — `scope.py` command reference
 - [docs/decisions.md](docs/decisions.md) — design decisions

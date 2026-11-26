@@ -1,0 +1,23 @@
+# SCOPE configuration. Change it with `scope.py config` (METHOD.md section 10).
+scope_version: dev
+language: en
+project:
+  name: todo-cli
+  test_command: pytest -q
+  lint_command: ruff check .
+python: python3
+build:
+  mode: supervised
+  supervised_max_cycles: 2
+  autonomous_cycles: 2
+git:
+  preset: story
+  enabled: true
+  commit_by: agent
+  commit_at:
+  - phase-artifact
+  - story-done
+  branching: per-epic
+  merge: never
+  push: never
+  branch_pattern: scope/{id}-{slug}
