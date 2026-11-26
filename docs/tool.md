@@ -37,7 +37,7 @@ when PyYAML is missing. Output is short plain text; exit code 1 means refused or
 | `approve CR-n` | Approves a change request; a quick CR also makes its draft stories `ready`. |
 | `approve release-close R<n> [--carry R<m> --reason TEXT]` | Closes the release, writes release notes, reopens roadmap and epics for the next plan. |
 | `waive G3 --reason TEXT` | Skips the architecture gate (small projects). |
-| `reopen <brief\|spec\|architecture\|roadmap\|epics\|ADR-n\|ST-n> --cr CR-n` | Reopens approved content for an approved CR (documents → `draft`, story → `needs-rework`). |
+| `reopen <brief\|spec\|architecture\|roadmap\|epics\|ADR-n\|ST-n> --cr CR-n` | Reopens approved content for an approved CR (documents → `draft`, story → `needs-rework`; a blocked story's blocker is resolved). Re-approving the plan makes reworked stories `ready` and relaunches a done epic only after `approve launch`. |
 | `cr close\|reject CR-n` | `close`: all reopened artifacts re-approved → `applied`. `reject`: proposed → `rejected`. |
 | `story start\|review\|rework\|done\|block\|unblock ST-n [--code B1..B7 --summary TEXT]` | Story transitions with their rules (dependencies, launch, review cycles, blockers). `done` is for autonomous mode. |
 | `register add --type ASM\|OQ --statement TEXT [--raised WHERE] [--blocking yes\|no] [--impacts IDS…]` | Adds a row, prints its id. |

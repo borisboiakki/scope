@@ -23,7 +23,7 @@ def front_matter(path):
 
 def test_skills_exist():
     names = {p.parent.name for p in SKILLS}
-    assert {"scope", "scope-spec", "scope-arch", "scope-plan"} <= names
+    assert names == {"scope", "scope-spec", "scope-arch", "scope-plan", "scope-build", "scope-change"}
 
 
 @pytest.mark.parametrize("path", SKILLS, ids=lambda p: p.parent.name)
@@ -47,3 +47,17 @@ def test_skill_rules(path):
                          sorted((REPO / "tool" / "templates").glob("*")), ids=lambda p: p.name)
 def test_template_size(path):
     assert len(path.read_text(encoding="utf-8").splitlines()) <= 60
+
+
+def test_reviewer_agent_source():
+    path = REPO / "agents" / "scope-reviewer.md"
+    fm, text = front_matter(path)
+    assert set(fm) == {"name", "description"} and fm["name"] == "scope-reviewer"
+    assert re.search(r"\bUse when\b", fm["description"])
+    assert len(text.splitlines()) <= 150
+    for token in FORBIDDEN:
+        assert token not in text
+    for word in ("VERDICT:", "PASS", "CHANGES", "BLOCKED", "never modify"):
+        assert word in text
+    for cmd in re.findall(r"scope\.py ([a-z-]+)", text):
+        assert cmd in COMMANDS

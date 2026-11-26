@@ -12,6 +12,7 @@ COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 FIELD_RE = re.compile(r"^-\s*\*\*(?P<key>[A-Za-z][A-Za-z ]*):\*\*\s*(?P<value>.*)$")
 HEADING_RE = re.compile(r"^(#{1,6})\s")
 STATUS_LINE_RE = re.compile(r"^\s*-\s*\*\*Status:\*\*")
+CHECKBOX_RE = re.compile(r"^(\s*[-*]\s+)\[[xX ]\]")
 
 
 class ScopeError(Exception):
@@ -114,12 +115,13 @@ def ids_in(text: str) -> list[str]:
 
 
 def content_hash(text: str) -> str:
-    """sha256 of the content, ignoring status values (they change during the lifecycle)."""
+    """sha256 of the content, ignoring status values and checkbox ticks (they change during the lifecycle)."""
     raw, body = split_front_matter(text)
     if raw is not None:
         kept = [ln for ln in raw.split("\n") if not re.match(r"^status\s*:", ln)]
         text = "---\n" + "\n".join(kept) + "\n---\n" + body
-    lines = [ln.rstrip() for ln in text.replace("\r\n", "\n").split("\n") if not STATUS_LINE_RE.match(ln)]
+    lines = [CHECKBOX_RE.sub(r"\1[ ]", ln.rstrip()) for ln in text.replace("\r\n", "\n").split("\n")
+             if not STATUS_LINE_RE.match(ln)]
     return hashlib.sha256("\n".join(lines).strip().encode("utf-8")).hexdigest()
 
 

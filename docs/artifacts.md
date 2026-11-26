@@ -18,7 +18,8 @@ Conventions shared by the templates (written by the skills) and `scope.py` (whic
 - Markdown with YAML front matter. Common fields: `id`, `type`, `version` (`major.minor`, starting at
   `0.1` while draft, `1.0` at first approval), `status`.
 - Approval data (who, when, hash) is stored in `docs/scope/state.yaml`, never in the artifact.
-- The approval hash ignores status values (the front matter `status:` line and `- **Status:**` lines), which
+- The approval hash ignores status values (the front matter `status:` line and `- **Status:**` lines) and
+  checkbox ticks (`- [x]`), which
   change during the lifecycle; any other change to approved content is detected by `scope.py check`.
 - `<angle brackets>` are placeholders. `<!-- comments -->` are guidance for the agent: it follows them
   and **removes them** from the written artifact.

@@ -46,13 +46,24 @@ permission:
   edit: deny
   task: deny
   webfetch: deny
+  websearch: deny
 ```
 
 No model is pinned: the reviewer uses the session's model.
 
-## Still to verify on a real installation (opencode 1.18.29 and Claude Code)
+## Verified
 
-- Skills in `.claude/skills/` appear in opencode and load on request.
-- The build skill can launch `scope-reviewer` in both tools and receives its report.
-- The reviewer cannot edit files in either tool.
-- The tool's Python environment (`.scope/.venv`) runs from both tools' shell on Linux, macOS and Windows.
+With **Claude Code 2.1.332** on Linux (2026-11-26), in a project installed with `install.py --setup`:
+
+- the six skills in `.claude/skills/` and the `scope-reviewer` agent are listed by a headless session;
+- a headless session launched the `scope-reviewer` subagent on a story: it ran the tests, lint,
+  `git diff` and `scope.py extract`, returned the expected `VERDICT` format, and changed no file;
+- `.scope/.venv` is created by `install.py --setup` and used automatically by `scope.py`.
+
+## Still to verify
+
+- opencode 1.18.29 and 2.x: skills from `.claude/skills/` listed and loaded; the reviewer subagent
+  launched from the build skill (task tool in 1.x, background subagent in 2.x) and its report received;
+  edits denied to the reviewer.
+- The interactive skills (init questions, approvals) in a real session of both tools.
+- macOS and Windows (paths, `python` vs `python3`, `.scope/.venv/Scripts`).

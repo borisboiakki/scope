@@ -150,14 +150,16 @@ def _approve_plan(p: Project, rel: str, by: str) -> str:
         raise ScopeError(f"no epic for {rel} in epics.md")
     _require_clean(p, extra_release=rel)
     msgs = [_approve_doc(p, "roadmap", p.docs["roadmap"], by), _approve_doc(p, "epics", p.docs["epics"], by)]
-    items = {}
+    items, made_ready = {}, 0
     for ep in epics:
-        if p.epics[ep]["status"] == "planned":
-            _set_epic_status(p, ep, "ready")
+        reworked = any(p.stories[s].status == "needs-rework" for s in p.stories_of_epic(ep) if s in p.stories)
+        if p.epics[ep]["status"] == "planned" or (p.epics[ep]["status"] == "done" and reworked):
+            _set_epic_status(p, ep, "ready")  # a done epic with reworked stories is launched again
         for sid in p.stories_of_epic(ep):
             st = p.stories[sid]
             if st.status in ("draft", "needs-rework"):
                 _set_doc_status(st, "ready")
+                made_ready += 1
             items[sid] = st.hash()
     _record(p, f"plan {rel}", by, items=items)
     for sid in items:
@@ -165,7 +167,7 @@ def _approve_plan(p: Project, rel: str, by: str) -> str:
     p.state["phase"] = "build"
     p.state["current"]["release"] = p.state["current"].get("release") or rel
     p.save_state()
-    msgs.append(f"approved plan {rel}: {len(epics)} epic(s), {len(items)} story(ies) ready")
+    msgs.append(f"approved plan {rel}: {len(epics)} epic(s), {len(items)} story(ies), {made_ready} made ready")
     return "\n".join(m for m in msgs if m)
 
 
@@ -239,6 +241,10 @@ def _approve_cr(p: Project, cid: str, by: str) -> str:
             if st and st.status == "draft":
                 _set_doc_status(st, "ready")
                 items[sid] = st.hash()
+                ep = str(st.fm.get("epic"))
+                if p.epics.get(ep, {}).get("status") == "done":
+                    _set_epic_status(p, ep, "launched")  # quick story in a finished epic: same mode as before
+                    p.state["current"].update({"epic": ep})
     _record(p, cid, by, items=items or None)
     p.save_state()
     extra = f" ({len(items)} quick story(ies) ready)" if items else ""
@@ -302,6 +308,14 @@ def reopen(p: Project, target: str, cr_id: str) -> str:
         doc, new = p.adrs[target], "draft"
     elif target in p.stories:
         doc, new = p.stories[target], "needs-rework"
+        if doc.status == "blocked":  # the CR is the human's answer to the blocker
+            for b in p.state["blockers"]:
+                if b.get("story") == target and not b.get("resolved"):
+                    b["resolved"] = now()
+                    b["resolution"] = f"reopened for {cr_id}"
+            ep = str(doc.fm.get("epic"))
+            if p.epics.get(ep, {}).get("status") == "blocked":
+                _set_epic_status(p, ep, "launched")
     else:
         raise ScopeError(f"cannot reopen '{target}'")
     _set_doc_status(doc, new)
@@ -346,6 +360,8 @@ def story(p: Project, action: str, sid: str, code: str | None = None, summary: s
     if action == "start":
         if status != "ready":
             raise ScopeError(f"{sid} is '{status}'; only a ready story can start")
+        if epic.get("status") == "blocked":
+            raise ScopeError(f"{ep} is blocked: resolve the open blocker first (scope.py status)")
         if epic.get("status") != "launched":
             raise ScopeError(f"{ep} is not launched (approve launch {ep})")
         deps = [d for d in id_list(st.fm.get("depends_on")) if d in p.stories and p.stories[d].status != "done"]

@@ -50,7 +50,7 @@ def test_approval_chain(sample):
     assert "ADR-1" in out
     assert "status: approved" in sample.path("adr/ADR-1-use-sqlite.md").read_text()
     out = sample("approve", "plan", "R1")
-    assert "2 story(ies) ready" in out
+    assert "2 story(ies), 2 made ready" in out
     assert "status: ready" in sample.path("stories/ST-1-add-a-task.md").read_text()
     assert "- **Status:** ready" in sample.path("epics.md").read_text()
     assert "0 error(s)" in sample("check")
@@ -285,3 +285,97 @@ def test_example_project_is_consistent(tmp_path, capsys):
     code = scope.main(["--root", str(tmp_path / "todo-cli"), "check"])
     out = capsys.readouterr().out
     assert code == 0 and "0 error(s), 0 warning(s)" in out, out
+
+
+def test_rework_after_epic_done(planned):
+    planned("approve", "launch", "EP-1", "--mode", "autonomous")
+    for sid in ("ST-1", "ST-2"):
+        _build_story(planned, sid)
+        planned("story", "done", sid)
+    planned.write("changes/CR-1-change.md", """---
+id: CR-1
+type: cr
+status: proposed
+change_type: requirement
+class: minor
+quick: false
+affects: [FR-1, ST-1]
+date: 2026-11-26
+---
+
+# CR-1 Change ST-1
+""")
+    planned("approve", "CR-1")
+    planned("reopen", "ST-1", "--cr", "CR-1")
+    planned.edit("stories/ST-1-add-a-task.md", "then it works", "then it works and shows the date")
+    assert "approval refused" not in planned("check", ok=None)
+    planned("reopen", "epics", "--cr", "CR-1")
+    planned.edit("epics.md", "version: 1.0", "version: 1.1")
+    planned("approve", "plan", "R1")
+    assert "- **Status:** ready" in planned.path("epics.md").read_text()
+    planned("cr", "close", "CR-1")
+    planned("approve", "launch", "EP-1", "--mode", "autonomous")
+    _build_story(planned, "ST-1")
+    assert "EP-1 done" in planned("story", "done", "ST-1")
+
+
+def test_quick_story_in_done_epic(planned):
+    planned("approve", "launch", "EP-1", "--mode", "autonomous")
+    for sid in ("ST-1", "ST-2"):
+        _build_story(planned, sid)
+        planned("story", "done", sid)
+    planned.write("stories/ST-3-fix.md", """---
+id: ST-3
+type: story
+epic: EP-1
+release: R1
+status: draft
+size: S
+implements: [FR-1.1]
+adrs: []
+depends_on: []
+cr: CR-1
+---
+
+# ST-3 Fix trailing spaces
+
+## Implementation record
+
+## Review record
+| Cycle | Verdict | Findings (severity: summary, file:line) |
+|---|---|---|
+
+## Blocker record
+""")
+    planned.write("changes/CR-1-fix.md", """---
+id: CR-1
+type: cr
+status: proposed
+change_type: defect
+class: minor
+quick: true
+affects: [ST-3, FR-1]
+date: 2026-11-26
+---
+
+# CR-1 Fix trailing spaces
+""")
+    planned("approve", "CR-1")
+    planned("cr", "close", "CR-1")
+    assert "- **Status:** launched" in planned.path("epics.md").read_text()
+    _build_story(planned, "ST-3")
+    assert "EP-1 done" in planned("story", "done", "ST-3")
+    assert "0 error(s)" in planned("check")
+
+
+def test_ticking_tasks_is_not_drift(planned):
+    planned.edit("stories/ST-1-add-a-task.md", "## Implementation record", "## Tasks\n- [x] done\n\n## Implementation record")
+    assert "E15" in planned("check", ok=False)  # a new task is a real change
+    planned.edit("stories/ST-1-add-a-task.md", "- [x] done", "- [ ] done")
+    assert "E15" in planned("check", ok=False)
+
+
+def test_checkbox_state_ignored_by_hash():
+    from scope_lib.util import content_hash
+    assert content_hash("a\n- [ ] task\n") == content_hash("a\n- [x] task\n")
+    assert content_hash("a\n- [ ] task\n") != content_hash("a\n- [ ] other\n")
