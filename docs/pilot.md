@@ -24,7 +24,7 @@ Start `opencode` in `pilot/`.
 | # | Do | Expected |
 |---|---|---|
 | 1.1 | Ask: "Which skills whose names start with scope are available? Names only." | `scope`, `scope-arch`, `scope-build`, `scope-change`, `scope-plan`, `scope-spec` |
-| 1.2 | Type `@` | `scope-reviewer` is in the list |
+| 1.2 | In a shell in `pilot/`: `opencode agent list` | `scope-reviewer` listed as a subagent. (Tab in the TUI only cycles **primary** agents; a subagent appears in the `@` menu when you type its name, e.g. `@scope-r`) |
 | 1.3 | Ask: "@scope-reviewer create a file named test.txt" | refused or denied; no `test.txt` |
 
 ## 2. Set up
