@@ -6,13 +6,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python: ["3.9", "3.13"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-      - run: pip install -r tool/requirements.txt pytest
+      # uv provides older Pythons (3.9) that actions/setup-python no longer offers on recent runners
+      - uses: astral-sh/setup-uv@v6
       - run: git config --global user.email ci@example.com && git config --global user.name ci
-      - run: python -m pytest -q tests
+      - run: uv run --no-project --python ${{ matrix.python }} --with pyyaml --with pytest python -m pytest -q tests
