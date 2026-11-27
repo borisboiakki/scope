@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.0.1 — unreleased
+## 0.1.0 — 2026-11-27
+
+First release: method, templates, tool, six skills, reviewer agent, installer.
+Pilot on opencode 1.18.29 passed (token use roughly 70 % lower than comparable BMAD runs).
+
 
 - Method definition (`METHOD.md`), authoring guide, compatibility notes for Claude Code and opencode V2,
   design decision log.

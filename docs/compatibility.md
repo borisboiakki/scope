@@ -74,15 +74,16 @@ With **Claude Code 2.1.332** on Linux (2026-11-26), in a project installed with 
   `git diff` and `scope.py extract`, returned the expected `VERDICT` format, and changed no file;
 - `.scope/.venv` is created by `install.py --setup` and used automatically by `scope.py`.
 
-With **opencode 1.18.29** on Linux, Python 3.9 (pilot by the owner, 2026-11-27, `docs/pilot.md` steps 1–2):
+With **opencode 1.18.29** on Linux, Python 3.9 (pilot by the owner, 2026-11-27, all steps of `docs/pilot.md`):
 
 - the six skills in `.claude/skills/` are listed; `scope-reviewer` is loaded as a subagent from
   `.opencode/agents/` (1.x format) and refuses to edit files;
-- skill `scope` runs the set-up: environment checks, one question batch, `init` and `doctor`.
+- the whole workflow ran: set-up, brief, spec, architecture, plan, epic launch, build with the reviewer
+  subagent launched from `scope-build`, change request; the traps (approval out of order, hand edit of an
+  approved spec) were refused or reported; the global install worked.
 
 ## Still to verify
 
-- opencode 1.18.29: the rest of the pilot (phases, reviewer launched from the build skill and its report
-  received). opencode 2.x: everything.
+- opencode 2.x: everything (the agent file is in the 1.x format, which 2.x documents as still read).
 - The interactive skills (init questions, approvals) in a real session of both tools.
 - macOS and Windows (paths, `python` vs `python3`, `.scope/.venv/Scripts`).

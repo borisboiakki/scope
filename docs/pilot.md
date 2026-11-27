@@ -1,5 +1,9 @@
 # Pilot on opencode 1.18.29 (milestone 6)
 
+**Result (2026-11-27, run by the owner on Linux, Python 3.9):** all steps passed after one fix
+(the installer needed Python 3.10, see D-036). Token use: roughly **70 % lower** than comparable BMAD
+runs (estimate; opencode 1.18.29 gave no precise per-phase figures).
+
 Goal: confirm SCOPE works end to end in opencode, find what breaks, and measure the cost of each
 phase. Run it on a **small** project: one release with one epic of 2–3 stories.
 
