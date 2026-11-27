@@ -23,7 +23,7 @@ def yaml_module():
     try:
         import yaml  # noqa: PLC0415
     except ImportError as exc:  # pragma: no cover - depends on the environment
-        raise ScopeError("PyYAML is missing: run `python3 .scope/scope.py setup`") from exc
+        raise ScopeError("PyYAML is missing: run `scope.py setup` (python3 <path of scope.py> setup)") from exc
     return yaml
 
 

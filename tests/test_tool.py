@@ -7,7 +7,8 @@ def test_init_creates_project(run):
     for rel in ("config.yaml", "state.yaml", "register.md"):
         assert run.path(rel).exists()
     agents = (run.root / "AGENTS.md").read_text()
-    assert "<!-- scope:begin -->" in agents and "python3 .scope/scope.py" in agents
+    assert "<!-- scope:begin -->" in agents
+    assert f"python3 {(scope.Path(scope.__file__).resolve()).as_posix()}" in agents  # tool outside the project
     assert (run.root / "CLAUDE.md").read_text().strip() == "@AGENTS.md"
     run("init", "--name", "Todo")  # idempotent
     assert agents == (run.root / "AGENTS.md").read_text()

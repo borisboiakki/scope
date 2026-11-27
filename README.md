@@ -31,6 +31,19 @@ python3 ../scope/install.py . --setup
 with PyYAML. It never touches `docs/scope/`, so running it again upgrades SCOPE safely
 (`--uninstall` removes it, `--opencode-format v2` writes the opencode 2.x native agent format).
 
+**Global install** (once for all your projects):
+
+```bash
+python3 scope/install.py --global --setup
+```
+
+Skills go to `~/.claude/skills/` (Claude Code; opencode reads it too), the reviewer to `~/.claude/agents/`
+and `~/.config/opencode/agents/`, the tool to `~/.scope/`; the skills call the tool by its full path.
+Any folder can be chosen instead: `--skills-dir`, `--claude-agents-dir`, `--opencode-agents-dir`,
+`--tool-dir` (the installer warns when a tool would not search the chosen skills folder). Each project
+still gets its own `docs/scope/` when you say "set up SCOPE" in it. Upgrading a global install
+changes SCOPE for every project; `doctor` notes when a project was set up with another version.
+
 Then, in Claude Code or opencode, in the project:
 
 | You say | Skill | What happens |

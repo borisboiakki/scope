@@ -91,3 +91,64 @@ def test_uninstall_keeps_docs(tmp_path, capsys):
 
 def test_refuses_source_repo(capsys):
     assert install.main([str(REPO)]) == 1
+
+
+def fake_home(tmp_path, monkeypatch) -> Path:
+    h = tmp_path / "home"
+    h.mkdir()
+    monkeypatch.setenv("HOME", str(h))
+    monkeypatch.setenv("USERPROFILE", str(h))
+    return h
+
+
+def test_global_install(tmp_path, monkeypatch, capsys):
+    h = fake_home(tmp_path, monkeypatch)
+    assert install.main(["--global"]) == 0
+    out = capsys.readouterr().out
+    assert "WARNING" not in out
+    tool = (h / ".scope" / "scope.py").as_posix()
+    skill = (h / ".claude/skills/scope-plan/SKILL.md").read_text()
+    assert f"python3 {tool}" in skill and ".scope/scope.py`" not in skill.replace(tool, "")
+    for agent in (h / ".claude/agents/scope-reviewer.md", h / ".config/opencode/agents/scope-reviewer.md"):
+        assert f"python3 {tool} extract" in agent.read_text()
+    # a project uses the global install: init, AGENTS.md, doctor
+    proj = make_project(tmp_path)
+    env = {**__import__("os").environ, "HOME": str(h)}
+    run = lambda *a: subprocess.run([sys.executable, tool, *a], cwd=proj, capture_output=True,  # noqa: E731
+                                    text=True, env=env)
+    assert run("init", "--name", "P").returncode == 0
+    assert f"python3 {tool} <command>" in (proj / "AGENTS.md").read_text()
+    doctor = run("doctor").stdout
+    assert f"skills installed: scope, scope-arch, scope-build, scope-change, scope-plan, scope-spec " \
+           f"({h / '.claude' / 'skills'})" in doctor
+    assert "ok   reviewer agent for opencode" in doctor
+    assert install.main(["--global", "--uninstall"]) == 0
+    assert not (h / ".scope").exists() and not list((h / ".claude/skills").glob("scope*"))
+
+
+def test_custom_dirs_warn_and_doctor_uses_manifest(tmp_path, monkeypatch, capsys):
+    h = fake_home(tmp_path, monkeypatch)
+    proj = make_project(tmp_path)
+    shared = tmp_path / "team skills"
+    assert install.main([str(proj), "--skills-dir", str(shared), "--tool-dir", str(tmp_path / "tools")]) == 0
+    out = capsys.readouterr().out
+    assert "WARNING: Claude Code does not search" in out and '"skills": [' in out
+    tool = (tmp_path / "tools" / "scope.py").as_posix()
+    assert f"python3 {tool}" in (shared / "scope" / "SKILL.md").read_text()
+    assert (proj / ".claude/agents/scope-reviewer.md").exists()  # agents still in the project
+    env = {**__import__("os").environ, "HOME": str(h)}
+    subprocess.run([sys.executable, tool, "init", "--name", "P"], cwd=proj, env=env, check=True, capture_output=True)
+    doctor = subprocess.run([sys.executable, tool, "doctor"], cwd=proj, env=env, capture_output=True, text=True).stdout
+    assert f"({shared})" in doctor
+
+
+def test_tool_inside_project_is_relative(tmp_path, monkeypatch):
+    fake_home(tmp_path, monkeypatch)
+    proj = make_project(tmp_path)
+    install.main([str(proj), "--tool-dir", str(proj / "tools" / "scope")])
+    assert "python3 tools/scope/scope.py" in (proj / ".claude/skills/scope/SKILL.md").read_text()
+
+
+def test_global_and_project_conflict(tmp_path):
+    proj = make_project(tmp_path)
+    assert install.main([str(proj), "--global"]) == 1
