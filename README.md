@@ -74,7 +74,7 @@ not yet tried on a real installation (see `docs/compatibility.md`).
 | M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
 | M4 | `scope-build`, `scope-reviewer` agent, `scope-change` | done |
 | M5 | Installer (`install.py`), getting started, real Claude Code check | done |
-| M6 | Pilot, v0.1.0 | planned |
+| M6 | Pilot on opencode ([docs/pilot.md](docs/pilot.md)), v0.1.0 | in progress |
 
 ## Example
 
