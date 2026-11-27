@@ -18,7 +18,7 @@ brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epic
 
 ## Getting started
 
-Requirements: Python 3.10+, git, Claude Code or opencode (1.18.29+ or 2.x).
+Requirements: Python 3.9+, git, Claude Code or opencode (1.18.29+ or 2.x).
 
 ```bash
 git clone https://github.com/borisboiakki/scope.git
@@ -63,8 +63,9 @@ In Claude Code you can also call a skill directly (`/scope-plan`), in opencode w
 
 ## Status
 
-Work in progress (pre-release). Verified with Claude Code 2.1.332; opencode support is documented but
-not yet tried on a real installation (see `docs/compatibility.md`).
+Version 0.1.0. Verified with Claude Code 2.1.332 and with a full pilot on opencode 1.18.29 (Linux,
+Python 3.9), with token use roughly 70 % lower than comparable BMAD runs. Not yet tried: opencode 2.x,
+macOS and Windows (see `docs/compatibility.md`).
 
 | Milestone | Content | Status |
 |---|---|---|
@@ -74,7 +75,7 @@ not yet tried on a real installation (see `docs/compatibility.md`).
 | M3 | Skills `scope`, `scope-spec`, `scope-arch`, `scope-plan`; example project | done |
 | M4 | `scope-build`, `scope-reviewer` agent, `scope-change` | done |
 | M5 | Installer (`install.py`), getting started, real Claude Code check | done |
-| M6 | Pilot, v0.1.0 | planned |
+| M6 | Pilot on opencode ([docs/pilot.md](docs/pilot.md)), v0.1.0 | done |
 
 ## Example
 

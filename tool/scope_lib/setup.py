@@ -11,7 +11,7 @@ from .util import ScopeError, now, read, write
 
 TOOL_DIR = Path(__file__).resolve().parent.parent          # folder holding scope.py (.scope/ when installed)
 TEMPLATES = TOOL_DIR / "templates"
-MIN_PY = (3, 10)
+MIN_PY = (3, 9)
 
 PRESETS = {
     "story": {"enabled": True, "commit_by": "agent", "commit_at": ["phase-artifact", "story-done"],
@@ -96,7 +96,7 @@ def doctor(root: Path) -> str:
         problems += 0 if ok else 1
         lines.append(f"{'ok  ' if ok else 'FAIL'} {text}" + ("" if ok or not hint else f" -> {hint}"))
 
-    item(sys.version_info >= MIN_PY, f"python {sys.version.split()[0]} ({sys.executable})", "install Python 3.10+")
+    item(sys.version_info >= MIN_PY, f"python {sys.version.split()[0]} ({sys.executable})", "install Python 3.9+")
     try:
         import yaml  # noqa: PLC0415
         item(True, f"PyYAML {yaml.__version__}")

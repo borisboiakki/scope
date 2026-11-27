@@ -286,7 +286,7 @@ If the impact analysis shows more than a small change, the quick track is refuse
 
 ## 14. The tool
 
-- Python ≥ 3.10, one dependency (PyYAML), installed in `.scope/.venv`.
+- Python ≥ 3.9, one dependency (PyYAML), installed in `.scope/.venv`.
 - `scope init` is guided by the agent: it checks Python, creates the virtual environment, installs the
   requirements, runs `scope.py doctor`, then asks the init questions (git preset, build mode, artifact
   language). If something is missing, the agent explains how to install it and stops; it never installs
