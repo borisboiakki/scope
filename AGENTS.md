@@ -15,7 +15,7 @@ This repository defines SCOPE, a spec-driven workflow for AI coding agents (see 
 - Everything must work in **Claude Code and opencode**: no tool-specific syntax in skill bodies.
 - Respect the size limits: `SKILL.md` ≤ 150 lines, templates/checklists ≤ 60 lines.
 - Mechanical checks belong in `tool/scope.py`, with pytest tests, not in skill prose.
-- Python ≥ 3.10, standard library + PyYAML only for the tool (pytest for development).
+- Python ≥ 3.9 (tested in CI), standard library + PyYAML only for the tool (pytest for development).
 - Record every design decision in `docs/decisions.md`; never present an unverified tool behaviour as
   fact (mark it "to verify" in `docs/compatibility.md`).
 - Commits: Conventional Commits (`feat(tool): …`, `docs(method): …`). Bump `VERSION` (semver) and

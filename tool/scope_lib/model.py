@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 from .util import (FIELD_RE, HEADING_RE, ScopeError, content_hash, ids_in, parse_front_matter, raw_fm_value,
-                   read, strip_comments, yaml_module)
+                   read, strip_comments, write, yaml_module)
 
 DOCS = ("brief", "spec", "architecture", "roadmap", "epics", "register")
 VERSIONED = ("brief", "spec", "architecture", "roadmap", "epics")
@@ -290,13 +290,13 @@ class Project:
         yaml = yaml_module()
         text = "# SCOPE state. Managed by scope.py only: do not edit by hand.\n"
         text += yaml.safe_dump(self.state, sort_keys=False, allow_unicode=True, width=120)
-        (self.dir / "state.yaml").write_text(text, encoding="utf-8", newline="\n")
+        write(self.dir / "state.yaml", text)
 
     def save_config(self):
         yaml = yaml_module()
         text = "# SCOPE configuration. Change it with `scope.py config` (see METHOD.md section 10).\n"
         text += yaml.safe_dump(self.config, sort_keys=False, allow_unicode=True, width=120)
-        (self.dir / "config.yaml").write_text(text, encoding="utf-8", newline="\n")
+        write(self.dir / "config.yaml", text)
 
     def log(self, message: str):
         from .util import now

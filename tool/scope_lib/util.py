@@ -41,7 +41,8 @@ def read(path: Path) -> str:
 
 def write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8", newline="\n")
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:  # Path.write_text(newline=) needs 3.10
+        fh.write(text)
 
 
 def split_front_matter(text: str) -> tuple[str | None, str]:

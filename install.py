@@ -73,7 +73,9 @@ class Layout:
         for key in ("skills", "claude_agents", "opencode_agents", "tool"):
             value = Path(given[key]).expanduser().resolve() if given[key] else base.get(key)
             if value is None:
-                raise SystemExit(f"give a project, --global, or --{key.replace('_', '-')}-dir")
+                raise SystemExit("usage: python3 install.py <project folder> [--setup]   (per project)\n"
+                                 "       python3 install.py --global [--setup]           (all projects)\n"
+                                 "       python3 install.py -h                           (all options)")
             self.dirs[key] = value
 
     def tool_ref(self) -> str:
@@ -115,7 +117,8 @@ def render_opencode(meta: dict, body: str, fmt: str) -> str:
 
 def write(path: Path, text: str):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8", newline="\n")
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:  # Path.write_text(newline=) needs 3.10
+        fh.write(text)
 
 
 def install(lay: Layout, claude: bool, opencode: bool, fmt: str) -> list[str]:

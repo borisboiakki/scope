@@ -18,7 +18,7 @@ brief ─G1─▶ spec ─G2─▶ architecture ─G3─▶ plan (releases, epic
 
 ## Getting started
 
-Requirements: Python 3.10+, git, Claude Code or opencode (1.18.29+ or 2.x).
+Requirements: Python 3.9+, git, Claude Code or opencode (1.18.29+ or 2.x).
 
 ```bash
 git clone https://github.com/borisboiakki/scope.git

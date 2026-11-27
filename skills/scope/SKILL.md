@@ -29,7 +29,7 @@ project root. The method is in `METHOD.md` of the SCOPE distribution; this skill
 
 ## Init
 
-1. Check the environment: `python3 --version` (3.10+ needed) and `git rev-parse --is-inside-work-tree`.
+1. Check the environment: `python3 --version` (3.9+ needed) and `git rev-parse --is-inside-work-tree`.
    If Python is missing or too old, explain how to install it and stop. If the folder is not a git
    repository, propose `git init` and wait for the human's answer.
 2. Run `scope.py setup`. If it fails (no network, proxy), show the error and offer `scope.py setup --system`

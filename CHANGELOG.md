@@ -28,3 +28,4 @@
   `--claude-agents-dir`, `--opencode-agents-dir`, `--tool-dir`); the tool path is written into skills,
   agents and `AGENTS.md` when the tool is outside the project; `doctor` finds global and custom installs
   and notes a version mismatch.
+- Python 3.9 supported (installer and tool); clearer installer usage message.
